@@ -1,4 +1,4 @@
-create table animeListGenres(
+/*create table animeListGenres(
 	workId int not null,
 	engName varchar(127),
 	synonymsName varchar(255) character set utf8 collate utf8_general_ci 		not null,
@@ -6,11 +6,11 @@ create table animeListGenres(
 	episodes int not null,
 	genres varchar(255) not null,
 	primary key(workId)
-);
+);*/
 
 create table animeReviewsOrderByTime(
 	id int not null,
-        workId int not null,
+    workId int not null,
 	reviewId int not null,
 	workName varchar(255),
 	postTime varchar(255),
@@ -26,14 +26,14 @@ create table animeReviewsOrderByTime(
 	primary key(workId)
 );
 
-load data local infile './animeListGenres.csv'
+/*load data local infile './animeListGenres.csv'
 into table animeListGenres
 fields terminated by ','
 enclosed by '"'
 lines terminated by '\n'
-ignore 1 lines;
+ignore 1 lines;*/
 
-load data local infile './animeReviewsOrderByTime.csv'
+load data local infile 'animeReviewsOrderByTime.csv'
 into table animeReviewsOrderByTime
 fields terminated by ','
 enclosed by '"'
@@ -54,7 +54,7 @@ from animeListGenres as al left join (
                       animationRating +
 		      soundRating +
 		      characterRating +
-		      enjoymentRating)) as rating
+		      enjoymentRating) / 6) as rating
 	from animeReviewsOrderByTime 
 	group by workId) as ar 
      on al.workId = ar.workId;
