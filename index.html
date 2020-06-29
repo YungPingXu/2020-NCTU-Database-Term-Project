@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<script>
+    function search() {
+        var button = document.getElementById("search-button");
+        var word = document.getElementById("search-input");
+        button.innerHTML = '<i class="fa fa-circle-o-notch fa-spin"></i> 搜尋';
+        var req = new XMLHttpRequest();
+        //req.open("GET", "source/test3.php?search=" + word.value);
+        req.open("GET", "source/search.php?search=" + word.value);
+        req.onload = function() {
+            document.getElementById("search-result").innerHTML = this.responseText;
+            button.innerHTML = " 搜尋";
+        }
+        req.send();
+    }
+
+    function recommend(id) {
+        var button = document.getElementById("recommend-button" + id);
+        var recommend_id = document.getElementById("recommend-id" + id);
+        button.innerHTML = '<i class="fa fa-circle-o-notch fa-spin"></i> 正在查詢';
+        var req = new XMLHttpRequest();
+        req.open("GET", "source/recommend.php?id=" + recommend_id.value);
+        req.onload = function() {
+            document.getElementById("search-result").innerHTML = this.responseText;
+            button.innerHTML = " 搜尋";
+        }
+        req.send();
+    }
+</script>
+<style>
+    * {
+        font-family: "微軟正黑體";
+    }
+    
+    #header {
+        background-color: rgb(68, 68, 68);
+        color: white;
+        font-size: 35px;
+        padding: 15px;
+        padding-left: 25px;
+    }
+    
+    #main {
+        min-height: 588px;
+    }
+    
+    #bottom {
+        background-color: rgb(68, 68, 68);
+        color: white;
+        font-size: 20px;
+        padding: 15px;
+        padding-left: 25px;
+        text-align: center;
+    }
+    
+    #intro {
+        font-size: 25px;
+        color: black;
+        text-align: center;
+        padding-top: 50px;
+        padding-bottom: 10px;
+    }
+    
+    #search {
+        font-size: 25px;
+        text-align: center;
+    }
+    
+    #search-input {
+        font-size: 30px;
+        width: 800px;
+    }
+    
+    #search-result {
+        margin: 0 auto;
+        width: 930px;
+        font-size: 25px;
+    }
+    
+    #search-button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 6px 16px;
+        font-size: 25px;
+        width: 120px;
+    }
+    
+    .recommend-button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 6px 16px;
+        font-size: 20px;
+        width: 140px;
+    }
+</style>
+
+<body style="background-color: rgb(220,220,220);margin: 0px;">
+    <div id="header">
+        自製動畫推薦系統
+    </div>
+    <div id="main">
+        <div id="intro">
+            藉由輸入動畫名稱，來推薦相似類型的動畫給使用者
+        </div>
+        <div id="search">
+            <input type="text" id="search-input" placeholder="輸入動畫名稱">
+            <button id="search-button" onclick="search()">
+                <!--<i class="fa fa-circle-o-notch fa-spin"></i>--> 搜尋
+            </button>
+        </div>
+        <div id="search-result">
+
+        </div>
+    </div>
+    <div id="bottom">
+        2020 NCTU 資料庫系統概論 final project 第12組 許永平 陳昱瑋.
+    </div>
+</body>
+
+</html>
+
+</html>
+
+</html>
