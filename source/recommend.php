@@ -15,11 +15,11 @@ mysqli_query($link, "
 mysqli_query($link, "
     insert into animecmp(workId, cmppoint)
     select workId, 0
-    from animeListGenres;
+    from animelistgenres;
 ");
 mysqli_query($link, "
     set @n = (select workId
-    from animeListGenres
+    from animelistgenres
     where workId = '" . $_GET['id'] . "');
 ");
 for ($i = 1; $i <= 12; $i++) {
@@ -31,13 +31,13 @@ for ($i = 1; $i <= 12; $i++) {
             from (select ac.workId
                 from animecmp ac,
                 (select workId
-                from animeListGenres
+                from animelistgenres
                 where find_in_set((select split(genres, ', ', " . $i . ") as genre
-                        from animeListGenres
+                        from animelistgenres
                         where workId = @n
                         having genre != ''), genres) != 0 or null
                     or find_in_set((select split(genres, ',', " . $i . ") as genre
-                            from animeListGenres
+                            from animelistgenres
                             where workId = @n
                             having genre != ''), genres) != 0 or null
                 )as sa
@@ -47,18 +47,22 @@ for ($i = 1; $i <= 12; $i++) {
     ");
 }
 $result = mysqli_query($link, "
-    select G.jpName as jpName, G.engName
-    from animecmp A, animeListGenres G
-    where A.workId = G.workId
-    order by cmppoint desc
-    limit 50;
+    select al.jpName as jpName, al.engName as engName, al.genres as genres
+    from(select ac.workId as workId, ac.cmppoint * 3 + ar.rating as point
+         from animecmp as ac inner join animerating as ar
+              on ac.workId = ar.workId
+         order by point desc
+         limit 10)as fac, animelistgenres as al
+    where fac.workId = al.workId;
 ");
+
 echo "<table border='1' align='center'><tr align='center'>";
-echo "<tr><td>日文名稱</td><td>英文名稱</td><td></td>";
+echo "<tr><td>日文名稱</td><td>英文名稱</td><td>屬性</td>";
 while ($row = $result->fetch_row()) {
     echo "<tr>";
     echo "<td>" . $row[0] . "</td>";
     echo "<td>" . $row[1] . "</td>";
+    echo "<td>" . $row[2] . "</td>";
     echo "</tr>";
 }
 echo "</table>";
