@@ -11,24 +11,26 @@ $result = $mysqli->query("
           or engName like '%" . $_GET['search'] . "%'
     LIMIT 100;
 ");
-
-echo "<table border='1' align='center'><tr align='center'>";
-echo "<tr><td>日文名稱</td><td>英文名稱</td>";
-$cnt = 0;
-while ($row = $result->fetch_row()) {
-    echo "<tr>";
-    echo "<td>" . $row[0] . "</td>";
-    echo "<td>" . $row[1] . "</td>";
-    echo "<input id='recommend-id" . $cnt . "' type='hidden' value='" . $row[2] . "'>";
-    echo "<td>
+if ($result->num_rows == 0) {
+    echo "查無結果";
+} else {
+    echo "<table border='1' align='center'><tr align='center'>";
+    echo "<tr><td>日文名稱</td><td>英文名稱</td>";
+    $cnt = 0;
+    while ($row = $result->fetch_row()) {
+        echo "<tr>";
+        echo "<td>" . $row[0] . "</td>";
+        echo "<td>" . $row[1] . "</td>";
+        echo "<input id='recommend-id" . $cnt . "' type='hidden' value='" . $row[2] . "'>";
+        echo "<td>
             <button class='recommend-button' id='recommend-button" . $cnt . "' onclick='recommend(" . $cnt++ . ")'>
               <!--<i class='fa fa-circle-o-notch fa-spin'></i>-->開始推薦
             </button>
           </td>";
-    echo "</tr>";
+        echo "</tr>";
+    }
+
+    echo "</table>";
 }
-
-echo "</table>";
-
 $result->free();
 $mysqli->close();

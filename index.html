@@ -7,12 +7,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <script>
+    window.onload = function() {
+        var input = document.getElementById("search-input");
+        input.addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById("search-button").click();
+            }
+        });
+    }
+
     function search() {
         var button = document.getElementById("search-button");
         var word = document.getElementById("search-input");
         button.innerHTML = '<i class="fa fa-circle-o-notch fa-spin"></i> 搜尋';
         var req = new XMLHttpRequest();
-        //req.open("GET", "source/test3.php?search=" + word.value);
         req.open("GET", "source/search.php?search=" + word.value);
         req.onload = function() {
             document.getElementById("search-result").innerHTML = this.responseText;
@@ -25,6 +34,8 @@
         var button = document.getElementById("recommend-button" + id);
         var recommend_id = document.getElementById("recommend-id" + id);
         button.innerHTML = '<i class="fa fa-circle-o-notch fa-spin"></i> 正在查詢';
+        var disable = document.getElementsByClassName("recommend-button");
+        for (var i = 0; i < disable.length; i++) disable[i].disabled = true;
         var req = new XMLHttpRequest();
         req.open("GET", "source/recommend.php?id=" + recommend_id.value);
         req.onload = function() {
