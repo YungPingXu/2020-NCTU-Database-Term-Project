@@ -19,7 +19,7 @@ $mysqli->query("
     from animelistgenres
     where workId = '" . $_GET['id'] . "');
 ");
-for ($i = 1; $i <= 12; $i++) {
+for ($i = 1; $i <= 12; $i++){
     $mysqli->query("
         update animecmp
         set cmppoint = cmppoint + 1
@@ -54,7 +54,7 @@ $result = $mysqli->query("
 ");
 echo "<table border='1' align='center'><tr align='center'>";
 echo "<tr><td>日文名稱</td><td>英文名稱</td><td>屬性</td>";
-while ($row = $result->fetch_row()) {
+while ($row = $result->fetch_row()){
     echo "<tr>";
     echo "<td>" . $row[0] . "</td>";
     echo "<td>" . $row[1] . "</td>";
@@ -65,3 +65,4 @@ echo "</table>";
 $mysqli->query("drop table animecmp;");
 $result->free();
 $mysqli->close();
+?>

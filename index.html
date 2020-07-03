@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <script>
-    window.onload = function() {
+    window.onload = function () {
         var input = document.getElementById("search-input");
-        input.addEventListener("keyup", function(event) {
+        input.addEventListener("keyup", function (event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
                 document.getElementById("search-button").click();
@@ -23,7 +23,7 @@
         button.innerHTML = '<i class="fa fa-circle-o-notch fa-spin"></i> 搜尋';
         var req = new XMLHttpRequest();
         req.open("GET", "source/search.php?search=" + word.value);
-        req.onload = function() {
+        req.onload = function () {
             document.getElementById("search-result").innerHTML = this.responseText;
             button.innerHTML = " 搜尋";
         }
@@ -44,7 +44,7 @@
         search_button.style.opacity = 0.5;
         var req = new XMLHttpRequest();
         req.open("GET", "source/recommend.php?id=" + recommend_id.value);
-        req.onload = function() {
+        req.onload = function () {
             document.getElementById("search-result").innerHTML = this.responseText;
             button.innerHTML = " 搜尋";
             search_button.disabled = false;
@@ -57,7 +57,7 @@
     * {
         font-family: "微軟正黑體";
     }
-    
+
     #header {
         background-color: rgb(68, 68, 68);
         color: white;
@@ -65,11 +65,11 @@
         padding: 15px;
         padding-left: 25px;
     }
-    
+
     #main {
         min-height: 588px;
     }
-    
+
     #bottom {
         background-color: rgb(68, 68, 68);
         color: white;
@@ -78,7 +78,7 @@
         padding-left: 25px;
         text-align: center;
     }
-    
+
     #intro {
         font-size: 25px;
         color: black;
@@ -86,23 +86,30 @@
         padding-top: 50px;
         padding-bottom: 10px;
     }
-    
+
     #search {
         font-size: 25px;
-        text-align: center;
+        margin: 0 auto;
+        width: 940px;
     }
-    
+
+    .menu {
+        font-size: 20px;
+        margin-right: 5px;
+    }
+
     #search-input {
         font-size: 30px;
         width: 800px;
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
-    
+
     #search-result {
-        margin: 0 auto;
         width: 930px;
         font-size: 25px;
     }
-    
+
     #search-button {
         background-color: #4CAF50;
         border: none;
@@ -111,7 +118,7 @@
         font-size: 25px;
         width: 120px;
     }
-    
+
     .recommend-button {
         background-color: #4CAF50;
         border: none;
@@ -131,13 +138,52 @@
             藉由輸入動畫名稱，來推薦相似類型的動畫給使用者
         </div>
         <div id="search">
-            <input type="text" id="search-input" placeholder="輸入動畫名稱">
+            種類：
+            <select class="menu" id="type">
+                <option value="Movie">Movie</option>
+                <option value="Music">Music</option>
+                <option value="ONA">ONA</option>
+                <option value="OVA">OVA</option>
+                <option value="Special">Special</option>
+                <option value="TV">TV</option>
+            </select>
+            年份：
+            <select class="menu" id="year">
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+            </select>
+            時間長短：
+            <select class="menu" id="duration">
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+            </select>
+            原作：
+            <select class="menu" id="source">
+                <option value="4-koma manga">4-koma manga</option>
+                <option value="Book">Book</option>
+                <option value="Card game">Card game</option>
+                <option value="Digital manga">Digital manga</option>
+                <option value="Game">Game</option>
+                <option value="Light novel">Light novel</option>
+                <option value="Manga">Manga</option>
+                <option value="Music">Music</option>
+                <option value="Novel">Novel</option>
+                <option value="Original">Original</option>
+                <option value="Other">Other</option>
+                <option value="Picture book">Picture book</option>
+                <option value="Radio">Radio</option>
+                <option value="Visual novel">Visual novel</option>
+                <option value="Web manga">Web manga</option>
+            </select>
+            <br><input type="text" id="search-input" placeholder="輸入動畫名稱">
             <button id="search-button" onclick="search()">
-                <!--<i class="fa fa-circle-o-notch fa-spin"></i>--> 搜尋
+                搜尋
             </button>
-        </div>
-        <div id="search-result">
-
+            <div id="search-result"></div>
         </div>
     </div>
     <div id="bottom">

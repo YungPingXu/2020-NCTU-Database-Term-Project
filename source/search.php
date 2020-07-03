@@ -14,7 +14,7 @@ $result = $mysqli->query("
 if ($result->num_rows == 0) {
     echo "查無結果";
 } else {
-    echo "<table border='1' align='center'><tr align='center'>";
+    echo "<table border='1'><tr align='center'>";
     echo "<tr><td>日文名稱</td><td>英文名稱</td>";
     $cnt = 0;
     while ($row = $result->fetch_row()) {
@@ -34,3 +34,4 @@ if ($result->num_rows == 0) {
 }
 $result->free();
 $mysqli->close();
+?>
