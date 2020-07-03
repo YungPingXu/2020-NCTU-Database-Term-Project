@@ -1,4 +1,4 @@
-/*create table animeListGenres(
+create table animelistgenres(
 	workId int not null,
 	engName varchar(127),
 	synonymsName varchar(255) character set utf8 collate utf8_general_ci 		not null,
@@ -6,9 +6,9 @@
 	episodes int not null,
 	genres varchar(255) not null,
 	primary key(workId)
-);*/
+);
 
-create table animeReviewsOrderByTime(
+create table animereviewsorderbytime(
 	id int not null,
     workId int not null,
 	reviewId int not null,
@@ -26,35 +26,35 @@ create table animeReviewsOrderByTime(
 	primary key(workId)
 );
 
-/*load data local infile './animeListGenres.csv'
-into table animeListGenres
-fields terminated by ','
-enclosed by '"'
-lines terminated by '\n'
-ignore 1 lines;*/
-
-load data local infile 'animeReviewsOrderByTime.csv'
-into table animeReviewsOrderByTime
+load data local infile './animeListGenres.csv'
+into table animelistgenres
 fields terminated by ','
 enclosed by '"'
 lines terminated by '\n'
 ignore 1 lines;
 
-create table animeRating(
+load data local infile './animeReviewsOrderByTime.csv'
+into table animereviewsorderbytime
+fields terminated by ','
+enclosed by '"'
+lines terminated by '\n'
+ignore 1 lines;
+
+create table animerating(
 	workId int not null,
 	rating int not null,
 	primary key(workId)
 );
 
-insert into animeRating(workId, rating)
+insert into animerating(workId, rating)
 select al.workId, ifnull(ar.rating, 0) 
-from animeListGenres as al left join (
+from animelistgenres as al left join (
 	select workId, round(avg(overallRating + 
 		      storyRating + 
                       animationRating +
 		      soundRating +
 		      characterRating +
 		      enjoymentRating) / 6) as rating
-	from animeReviewsOrderByTime 
+	from animereviewsorderbytime 
 	group by workId) as ar 
      on al.workId = ar.workId;

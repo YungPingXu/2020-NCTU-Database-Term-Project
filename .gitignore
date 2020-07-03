@@ -4,3 +4,8 @@ appserv
 cgi-bin
 phpinfo.php
 .htaccess
+csv
+*.zip
+*.csv
+test
+dataset

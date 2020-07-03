@@ -1,5 +1,4 @@
 set names utf8;
-
 create table animecmp(
 	workId int not null,
 	cmppoint int
@@ -11,7 +10,7 @@ from animeListGenres;
 
 set @n = (select workId
 	  from animeListGenres
-	  where engName = 'Fullmetal Alchemist: Brotherhood');
+	  where engName = 'Sword Art Online');
 
 update animecmp
 set cmppoint = cmppoint + 1
@@ -265,13 +264,6 @@ where workId in
             )as an
       );
 
-select al.jpName as jpName, al.engName as engName
-from(select ac.workId as workId, ac.cmppoint + ar.rating as point
-     from animecmp as ac inner join animeRating as ar
-     on ac.workId = ar.workId
-     order by point desc
-     limit 10)as fac, animeListGenres as al
-where fac.workId = al.workId;
+select * from animecmp limit 100;
 
 drop table animecmp;
-

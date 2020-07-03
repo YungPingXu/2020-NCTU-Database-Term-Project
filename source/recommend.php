@@ -52,7 +52,7 @@ $result = mysqli_query($link, "
          from animecmp as ac inner join animerating as ar
               on ac.workId = ar.workId
          order by point desc
-         limit 10)as fac, animelistgenres as al
+         limit 20)as fac, animelistgenres as al
     where fac.workId = al.workId;
 ");
 

@@ -35,12 +35,20 @@
         var recommend_id = document.getElementById("recommend-id" + id);
         button.innerHTML = '<i class="fa fa-circle-o-notch fa-spin"></i> 正在查詢';
         var disable = document.getElementsByClassName("recommend-button");
-        for (var i = 0; i < disable.length; i++) disable[i].disabled = true;
+        var search_button = document.getElementById("search-button");
+        for (var i = 0; i < disable.length; i++) {
+            disable[i].disabled = true;
+            if (i != id) disable[i].style.opacity = 0.5;
+        }
+        search_button.disabled = true;
+        search_button.style.opacity = 0.5;
         var req = new XMLHttpRequest();
         req.open("GET", "source/recommend.php?id=" + recommend_id.value);
         req.onload = function() {
             document.getElementById("search-result").innerHTML = this.responseText;
             button.innerHTML = " 搜尋";
+            search_button.disabled = false;
+            search_button.style.opacity = 1;
         }
         req.send();
     }
