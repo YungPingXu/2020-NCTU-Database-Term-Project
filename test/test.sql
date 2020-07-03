@@ -1,4 +1,5 @@
 set names utf8;
+
 create table animecmp(
 	workId int not null,
 	cmppoint int
@@ -6,11 +7,26 @@ create table animecmp(
 
 insert into animecmp(workId, cmppoint)
 select workId, 0
-from animeListGenres;
+from animelistgenres;
 
 set @n = (select workId
-	  from animeListGenres
-	  where engName = 'Sword Art Online');
+	  from animelistgenres
+	  where engName = 'Fullmetal Alchemist: Brotherhood');
+
+create table animetemp(
+	workId int not null,
+	genres varchar(255) not null
+);
+
+insert into animetemp(workId, genres)
+select animelist.workId, animelistgenres.genres
+from animelist, animelistgenres
+where animelist.type like '%%' and
+      animelist.source like '%%' and
+      animelist.episodes >= 10 and
+      animelist.duration >= 20 and
+      animelist.year >= 2000 and
+      animelist.workId = animelistgenres.workId;
 
 update animecmp
 set cmppoint = cmppoint + 1
@@ -19,13 +35,13 @@ where workId in
        from (select ac.workId
 	     from animecmp ac, 
 	     (select workId
-	      from animeListGenres
+	      from animetemp
 	      where find_in_set((select split(genres, ', ', 1) as genre
-				 from animeListGenres
+				 from animelistgenres
 				 where workId = @n
 				 having genre != ''), genres) != 0 or null
 		    or find_in_set((select split(genres, ',', 1) as genre
-				    from animeListGenres
+				    from animelistgenres
 				    where workId = @n
 				    having genre != ''), genres) != 0 or null
 	     )as sa
@@ -40,13 +56,13 @@ where workId in
        from (select ac.workId
 	     from animecmp ac, 
 	     (select workId
-	      from animeListGenres
+	      from animetemp
 	      where find_in_set((select split(genres, ', ', 2) as genre
-				 from animeListGenres
+				 from animelistgenres
 				 where workId = @n
 				 having genre != ''), genres) != 0 or null
 		    or find_in_set((select split(genres, ',', 2) as genre
-				    from animeListGenres
+				    from animelistgenres
 				    where workId = @n
 				    having genre != ''), genres) != 0 or null
 	     )as sa
@@ -61,13 +77,13 @@ where workId in
        from (select ac.workId
 	     from animecmp ac, 
 	     (select workId
-	      from animeListGenres
+	      from animetemp
 	      where find_in_set((select split(genres, ', ', 3) as genre
-				 from animeListGenres
+				 from animelistgenres
 				 where workId = @n
 				 having genre != ''), genres) != 0 or null
 		    or find_in_set((select split(genres, ',', 3) as genre
-				    from animeListGenres
+				    from animelistgenres
 				    where workId = @n
 				    having genre != ''), genres) != 0 or null
 	     )as sa
@@ -82,13 +98,13 @@ where workId in
        from (select ac.workId
 	     from animecmp ac, 
 	     (select workId
-	      from animeListGenres
+	      from animetemp
 	      where find_in_set((select split(genres, ', ', 4) as genre
-				 from animeListGenres
+				 from animelistgenres
 				 where workId = @n
 				 having genre != ''), genres) != 0 or null
 		    or find_in_set((select split(genres, ',', 4) as genre
-				    from animeListGenres
+				    from animelistgenres
 				    where workId = @n
 				    having genre != ''), genres) != 0 or null
 	     )as sa
@@ -103,13 +119,13 @@ where workId in
        from (select ac.workId
 	     from animecmp ac, 
 	     (select workId
-	      from animeListGenres
+	      from animetemp
 	      where find_in_set((select split(genres, ', ', 5) as genre
-				 from animeListGenres
+				 from animelistgenres
 				 where workId = @n
 				 having genre != ''), genres) != 0 or null
 		    or find_in_set((select split(genres, ',', 5) as genre
-				    from animeListGenres
+				    from animelistgenres
 				    where workId = @n
 				    having genre != ''), genres) != 0 or null
 	     )as sa
@@ -124,13 +140,13 @@ where workId in
        from (select ac.workId
 	     from animecmp ac, 
 	     (select workId
-	      from animeListGenres
+	      from animetemp
 	      where find_in_set((select split(genres, ', ', 6) as genre
-				 from animeListGenres
+				 from animelistgenres
 				 where workId = @n
 				 having genre != ''), genres) != 0 or null
 		    or find_in_set((select split(genres, ',', 6) as genre
-				    from animeListGenres
+				    from animelistgenres
 				    where workId = @n
 				    having genre != ''), genres) != 0 or null
 	     )as sa
@@ -145,13 +161,13 @@ where workId in
        from (select ac.workId
 	     from animecmp ac, 
 	     (select workId
-	      from animeListGenres
+	      from animetemp
 	      where find_in_set((select split(genres, ', ', 7) as genre
-				 from animeListGenres
+				 from animelistgenres
 				 where workId = @n
 				 having genre != ''), genres) != 0 or null
 		    or find_in_set((select split(genres, ',', 7) as genre
-				    from animeListGenres
+				    from animelistgenres
 				    where workId = @n
 				    having genre != ''), genres) != 0 or null
 	     )as sa
@@ -166,13 +182,13 @@ where workId in
        from (select ac.workId
 	     from animecmp ac, 
 	     (select workId
-	      from animeListGenres
+	      from animetemp
 	      where find_in_set((select split(genres, ', ', 8) as genre
-				 from animeListGenres
+				 from animelistgenres
 				 where workId = @n
 				 having genre != ''), genres) != 0 or null
 		    or find_in_set((select split(genres, ',', 8) as genre
-				    from animeListGenres
+				    from animelistgenres
 				    where workId = @n
 				    having genre != ''), genres) != 0 or null
 	     )as sa
@@ -187,13 +203,13 @@ where workId in
        from (select ac.workId
 	     from animecmp ac, 
 	     (select workId
-	      from animeListGenres
+	      from animetemp
 	      where find_in_set((select split(genres, ', ', 9) as genre
-				 from animeListGenres
+				 from animelistgenres
 				 where workId = @n
 				 having genre != ''), genres) != 0 or null
 		    or find_in_set((select split(genres, ',', 9) as genre
-				    from animeListGenres
+				    from animelistgenres
 				    where workId = @n
 				    having genre != ''), genres) != 0 or null
 	     )as sa
@@ -208,13 +224,13 @@ where workId in
        from (select ac.workId
 	     from animecmp ac, 
 	     (select workId
-	      from animeListGenres
+	      from animetemp
 	      where find_in_set((select split(genres, ', ', 10) as genre
-				 from animeListGenres
+				 from animelistgenres
 				 where workId = @n
 				 having genre != ''), genres) != 0 or null
 		    or find_in_set((select split(genres, ',', 10) as genre
-				    from animeListGenres
+				    from animelistgenres
 				    where workId = @n
 				    having genre != ''), genres) != 0 or null
 	     )as sa
@@ -229,13 +245,13 @@ where workId in
        from (select ac.workId
 	     from animecmp ac, 
 	     (select workId
-	      from animeListGenres
+	      from animetemp
 	      where find_in_set((select split(genres, ', ', 11) as genre
-				 from animeListGenres
+				 from animelistgenres
 				 where workId = @n
 				 having genre != ''), genres) != 0 or null
 		    or find_in_set((select split(genres, ',', 11) as genre
-				    from animeListGenres
+				    from animelistgenres
 				    where workId = @n
 				    having genre != ''), genres) != 0 or null
 	     )as sa
@@ -250,13 +266,13 @@ where workId in
        from (select ac.workId
 	     from animecmp ac, 
 	     (select workId
-	      from animeListGenres
+	      from animetemp
 	      where find_in_set((select split(genres, ', ', 12) as genre
-				 from animeListGenres
+				 from animelistgenres
 				 where workId = @n
 				 having genre != ''), genres) != 0 or null
 		    or find_in_set((select split(genres, ',', 12) as genre
-				    from animeListGenres
+				    from animelistgenres
 				    where workId = @n
 				    having genre != ''), genres) != 0 or null
 	     )as sa
@@ -264,6 +280,35 @@ where workId in
             )as an
       );
 
-select * from animecmp limit 100;
+update animecmp
+set cmppoint = cmppoint + 1
+where workId in
+      (select an.workId 
+       from (select ac.workId
+	     from animecmp ac, 
+	     (select workId
+	      from animetemp
+	      where find_in_set((select split(genres, ', ', 13) as genre
+				 from animelistgenres
+				 where workId = @n
+				 having genre != ''), genres) != 0 or null
+		    or find_in_set((select split(genres, ',', 13) as genre
+				    from animelistgenres
+				    where workId = @n
+				    having genre != ''), genres) != 0 or null
+	     )as sa
+	     where ac.workId = sa.workId
+            )as an
+      );
+
+select al.jpName as jpName, al.engName as engName
+from(select ac.workId as workId, ac.cmppoint*3 + ar.rating as point
+     from animecmp as ac inner join animeRating as ar
+     on ac.workId = ar.workId
+     order by point desc
+     limit 10)as fac, animename as al
+where fac.workId = al.workId;
 
 drop table animecmp;
+drop table animetemp;
+

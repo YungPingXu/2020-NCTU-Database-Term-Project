@@ -4,11 +4,21 @@ if ($mysqli->connect_errno) {
     die("無法建立資料連接: " . $mysqli->connect_error);
 }
 $mysqli->query("SET NAMES utf8");
+$source=$_GET['source'];
+if($source=="Unknown")$source="";
+$animetype=$_GET['animetype'];
+if($animetype=="Unknown")$animetype="";
 $result = $mysqli->query("
-    SELECT jpName, engName,workId
-	FROM animelistgenres
-    where jpName like '%" . $_GET['search'] . "%'
-          or engName like '%" . $_GET['search'] . "%'
+    SELECT animename.jpName, animename.engName,animename.workId
+	FROM animename, animelist
+    where (animename.jpName like '%" . $_GET['search'] . "%'
+          or animename.engName like '%" . $_GET['search'] . "%')
+          and animelist.animetype like '%" . $animetype . "%' and
+        animelist.source like '%" . $source . "%' and
+        animelist.episodes >= " . $_GET['episodes'] . " and 
+        animelist.duration >= " . $_GET['duration'] . " and
+        animelist.startyear >= " . $_GET['startyear'] . " and
+        animelist.workId = animename.workId
     LIMIT 100;
 ");
 if ($result->num_rows == 0) {
