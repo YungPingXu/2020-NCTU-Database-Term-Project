@@ -8,7 +8,7 @@ create table animelistgenresraw(
 	primary key(workId)
 );
 
-/*create table animereviewsorderbyduration(
+create table animereviewsorderbyduration(
 	id int not null,
         workId int not null,
 	reviewId int not null,
@@ -24,7 +24,7 @@ create table animelistgenresraw(
 	characterRating int not null,
 	enjoymentRating int not null,
 	primary key(workId)
-);*/
+);
 
 create table animelistraw(
         workId int not null,
@@ -51,12 +51,12 @@ enclosed by '"'
 lines terminated by '\n'
 ignore 1 lines;
 
-/*load data local infile './animeReviewsOrderByduration.csv'
+load data local infile './animeReviewsOrderByduration.csv'
 into table animereviewsorderbyduration
 fields terminated by ','
 enclosed by '"'
 lines terminated by '\n'
-ignore 1 lines;*/
+ignore 1 lines;
 
 load data local infile './AnimeList.csv'
 into table animelistraw
@@ -86,7 +86,7 @@ insert into animename(workId, engName, jpName)
 select workId, engName, jpName
 from animelistgenresraw;
 
-/*create table animerating(
+create table animerating(
 	workId int not null,
 	rating int not null,
 	primary key(workId)
@@ -103,22 +103,26 @@ from animelistgenres as al left join (
 		      enjoymentRating)/6) as rating
 	from animereviewsorderbyduration 
 	group by workId) as ar 
-     on al.workId = ar.workId;*/
+     on al.workId = ar.workId;
 
 create table animelist(
 	workId int not null,
+	jpName varchar(255) character set utf8 collate utf8_general_ci not null,
+	engName varchar(127),
 	animetype varchar(127),
 	source varchar(255),
 	episodes int,
 	duration int,
 	startyear int,
+	good int,
+	bad int,
 	primary key(workId)
 );
 
-insert into animelist(workId, animetype, source, episodes, duration, startyear)
-select aml.workId,aml.animetype, aml.source, aml.episodes, 
+insert into animelist(workId, jpName, engName, animetype, source, episodes, duration, startyear, good, bad)
+select aml.workId, aml.jpName, aml.engName, aml.animetype, aml.source, aml.episodes, 
        convert(temp3.duration, unsigned), 
-       convert(if(temp4.startyear = '0', '1917', temp4.startyear), unsigned)
+       convert(temp4.startyear, unsigned), 0, 0
 from(select temp2.workId as workId, substring_index(temp2.duration, ' ', 1) * 60 + 
 	substring_index(temp2.duration, ' ', -1) as duration
      from(select temp5.workId as workId, if(temp5.duration like '%per', 
@@ -140,3 +144,10 @@ from(select temp2.workId as workId, substring_index(temp2.duration, ' ', 1) * 60
       from animelistraw)as temp4, animelistraw as aml
 where aml.episodes != 0 and temp3.workId = aml.workId and
       temp4.workId = temp3.workId;
+
+create table visitedip(
+	ip varchar(255),
+	id int,
+	good int,
+	bad int
+);

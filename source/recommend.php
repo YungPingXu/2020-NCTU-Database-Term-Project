@@ -62,21 +62,28 @@ for ($i = 1; $i <= 13; $i++){
     ");
 }
 $result = $mysqli->query("
-    select al.jpName as jpName, al.engName as engName, al.genres as genres
+    select al.jpName, if(al.engName = null, '無資料', al.engName),
+        if(al.animetype = 'Unknown', '無資料', al.animetype), if(al.source = 'Unknown', '無資料', al.source), al.episodes, concat(al.duration, ' 分'), if(al.startyear = 0, '無資料', al.startyear), al.good, al.bad, al.workId
     from(select ac.workId as workId, ac.cmppoint * 3 + ar.rating as point
          from animecmp as ac inner join animerating as ar
               on ac.workId = ar.workId
          order by point desc
-         limit 20)as fac, animelistgenresraw as al
-    where fac.workId = al.workId;
+         limit 20)as fac, animelist as al
+    where fac.workId = al.workId
+    order by al.good desc;
 ");
-echo "<table border='1' align='center'><tr align='center'>";
-echo "<tr><td>日文名稱</td><td>英文名稱</td><td>屬性</td>";
+echo "<table align='center' border='1'><tr>";
+echo "<tr><td>日文名稱</td><td>英文名稱</td><td>種類</td><td>原作</td><td>集數</td><td>時間</td><td>年份</td>";
 while ($row = $result->fetch_row()){
     echo "<tr>";
     echo "<td>" . $row[0] . "</td>";
     echo "<td>" . $row[1] . "</td>";
     echo "<td>" . $row[2] . "</td>";
+    echo "<td>" . $row[3] . "</td>";
+    echo "<td>" . $row[4] . "</td>";
+    echo "<td>" . $row[5] . "</td>";
+    echo "<td>" . $row[6] . "</td>";
+    echo "<td><input id='good" . $row[9] . "' class='img' type='image' img='' src='/img/like.PNG' onclick='like(" . $row[9] . ")'><span id='like" . $row[9] . "'>" . $row[7] . "</span><input id='bad" . $row[9] . "' class='img' type='image' img='' src='/img/dislike.PNG' onclick='unlike(" . $row[9] . ")'><span id='unlike" . $row[9] . "'>" . $row[8] . "</span></td>";
     echo "</tr>";
 }
 echo "</table>";

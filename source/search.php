@@ -9,7 +9,8 @@ if($source=="Unknown")$source="";
 $animetype=$_GET['animetype'];
 if($animetype=="Unknown")$animetype="";
 $result = $mysqli->query("
-    SELECT animename.jpName, animename.engName,animename.workId
+    SELECT animename.jpName, if(animelist.engName = null, '無資料', animelist.engName), animename.workId,
+        if(animelist.animetype = 'Unknown', '無資料', animelist.animetype), if(animelist.source = 'Unknown', '無資料', animelist.source), animelist.episodes, concat(animelist.duration,' 分'), if(animelist.startyear = 0, '無資料', animelist.startyear)
 	FROM animename, animelist
     where (animename.jpName like '%" . $_GET['search'] . "%'
           or animename.engName like '%" . $_GET['search'] . "%')
@@ -22,15 +23,20 @@ $result = $mysqli->query("
     LIMIT 100;
 ");
 if ($result->num_rows == 0) {
-    echo "查無結果";
+    echo "<span style='text-align: center;'>查無結果</span>";
 } else {
-    echo "<table border='1'><tr align='center'>";
-    echo "<tr><td>日文名稱</td><td>英文名稱</td>";
+    echo "<table align='center' border='1'><tr>";
+    echo "<tr><td>日文名稱</td><td>英文名稱</td><td>種類</td><td>原作</td><td>集數</td><td>時間</td><td>年份</td>";
     $cnt = 0;
     while ($row = $result->fetch_row()) {
         echo "<tr>";
         echo "<td>" . $row[0] . "</td>";
         echo "<td>" . $row[1] . "</td>";
+        echo "<td>" . $row[3] . "</td>";
+        echo "<td>" . $row[4] . "</td>";
+        echo "<td>" . $row[5] . "</td>";
+        echo "<td>" . $row[6] . "</td>";
+        echo "<td>" . $row[7] . "</td>";
         echo "<input id='recommend-id" . $cnt . "' type='hidden' value='" . $row[2] . "'>";
         echo "<td>
             <button class='recommend-button' id='recommend-button" . $cnt . "' onclick='recommend(" . $cnt++ . ")'>

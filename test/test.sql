@@ -312,3 +312,20 @@ where fac.workId = al.workId;
 drop table animecmp;
 drop table animetemp;
 
+update animegoodbad
+set good = 10, bad = 30 /*set good = good + 1 OR set bad = bad + 1*/
+where workId = 5114;
+
+select workId, if(good+bad = 0, 'no opinion', 
+               if(good+bad <= 10, 
+               if(good/(good+bad)<0.5, 'a little bad', 'a little good'),
+               if(good/(good+bad)<0.5, 
+               if(good/(good+bad)<0.25, 'very bad', 'a little bad'), 
+               if(good/(good+bad)>=0.75, 'very good', 'a little good'))))
+as goodorbad
+from animegoodbad
+where workId = 5114;
+
+update animegoodbad      /***************/
+set good = 0, bad = 0    /*should remove*/
+where workId = 5114;     /***************/
