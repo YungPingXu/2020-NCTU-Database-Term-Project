@@ -20,15 +20,15 @@ $mysqli->query("
 	genres varchar(255) not null
 );
 ");
-$source=$_GET['source'];
-if($source=="Unknown")$source="";
-$animetype=$_GET['animetype'];
-if($animetype=="Unknown")$animetype="";
+$source = $_GET['source'];
+if ($source == "Unknown") $source = "";
+$animetype = $_GET['animetype'];
+if ($animetype == "Unknown") $animetype = "";
 $mysqli->query("
     insert into animetemp(workId, genres)
-select animelist.workId, replace(animelistgenres.genres, ' ', '')
-from animelist, animelistgenres
-where animelist.animetype like '%" . $animetype . "%' and
+    select animelist.workId, replace(animelistgenres.genres, ' ', '')
+    from animelist, animelistgenres
+    where animelist.animetype like '%" . $animetype . "%' and
         animelist.source like '%" . $source . "%' and
         animelist.episodes >= " . $_GET['episodes'] . " and 
         animelist.duration >= " . $_GET['duration'] . " and
@@ -68,12 +68,21 @@ $result = $mysqli->query("
          from animecmp as ac inner join animerating as ar
               on ac.workId = ar.workId
          order by point desc
-         limit 20)as fac, animelist as al
+         limit " . $_GET['num'] . ")as fac, animelist as al
     where fac.workId = al.workId
     order by al.good desc;
 ");
 echo "<table align='center' border='1'><tr>";
-echo "<tr><td>日文名稱</td><td>英文名稱</td><td>種類</td><td>原作</td><td>集數</td><td>時間</td><td>年份</td>";
+echo "<tr>
+        <th style='width: 400px;'>日文名稱</th>
+        <th style='width: 400px;'>英文名稱</th>
+        <th>種類</th>
+        <th>原作</th>
+        <th>集數</th>
+        <th>時間</th>
+        <th>年份</th>
+        <th>按讚</th>
+    </tr>";
 while ($row = $result->fetch_row()){
     echo "<tr>";
     echo "<td>" . $row[0] . "</td>";

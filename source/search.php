@@ -4,13 +4,13 @@ if ($mysqli->connect_errno) {
     die("無法建立資料連接: " . $mysqli->connect_error);
 }
 $mysqli->query("SET NAMES utf8");
-$source=$_GET['source'];
-if($source=="Unknown")$source="";
-$animetype=$_GET['animetype'];
-if($animetype=="Unknown")$animetype="";
+$source = $_GET['source'];
+if ($source == "Unknown") $source = "";
+$animetype = $_GET['animetype'];
+if ($animetype == "Unknown") $animetype = "";
 $result = $mysqli->query("
     SELECT animename.jpName, if(animelist.engName = null, '無資料', animelist.engName), animename.workId,
-        if(animelist.animetype = 'Unknown', '無資料', animelist.animetype), if(animelist.source = 'Unknown', '無資料', animelist.source), animelist.episodes, concat(animelist.duration,' 分'), if(animelist.startyear = 0, '無資料', animelist.startyear)
+        if(animelist.animetype = 'Unknown', '無資料', animelist.animetype), if(animelist.source = 'Unknown', '無資料', animelist.source), animelist.episodes, concat(animelist.duration,' 分'), if(animelist.startyear = 0, '無資料', animelist.startyear), animelist.good, animelist.bad, animelist.workId
 	FROM animename, animelist
     where (animename.jpName like '%" . $_GET['search'] . "%'
           or animename.engName like '%" . $_GET['search'] . "%')
@@ -20,13 +20,23 @@ $result = $mysqli->query("
         animelist.duration >= " . $_GET['duration'] . " and
         animelist.startyear >= " . $_GET['startyear'] . " and
         animelist.workId = animename.workId
-    LIMIT 100;
+    order by animelist.good desc
+    LIMIT " . $_GET['num'] . ";
 ");
 if ($result->num_rows == 0) {
     echo "<span style='text-align: center;'>查無結果</span>";
 } else {
     echo "<table align='center' border='1'><tr>";
-    echo "<tr><td>日文名稱</td><td>英文名稱</td><td>種類</td><td>原作</td><td>集數</td><td>時間</td><td>年份</td>";
+    echo "<tr>
+            <th style='width: 400px;'>日文名稱</th>
+            <th style='width: 400px;'>英文名稱</th>
+            <th>種類</th>
+            <th>原作</th>
+            <th>集數</th>
+            <th>時間</th>
+            <th>年份</th>
+            <th>按讚</th>
+        </tr>";
     $cnt = 0;
     while ($row = $result->fetch_row()) {
         echo "<tr>";
@@ -38,14 +48,14 @@ if ($result->num_rows == 0) {
         echo "<td>" . $row[6] . "</td>";
         echo "<td>" . $row[7] . "</td>";
         echo "<input id='recommend-id" . $cnt . "' type='hidden' value='" . $row[2] . "'>";
+        echo "<td><input id='good" . $row[10] . "' class='img' type='image' img='' src='/img/like.PNG' onclick='like(" . $row[10] . ")'><span id='like" . $row[10] . "'>" . $row[8] . "</span><input id='bad" . $row[10] . "' class='img' type='image' img='' src='/img/dislike.PNG' onclick='unlike(" . $row[10] . ")'><span id='unlike" . $row[10] . "'>" . $row[9] . "</span></td>";
         echo "<td>
             <button class='recommend-button' id='recommend-button" . $cnt . "' onclick='recommend(" . $cnt++ . ")'>
-              <!--<i class='fa fa-circle-o-notch fa-spin'></i>-->開始推薦
+            <!--<i class='fa fa-circle-o-notch fa-spin'></i>-->開始推薦
             </button>
-          </td>";
+        </td>";
         echo "</tr>";
     }
-
     echo "</table>";
 }
 $result->free();
