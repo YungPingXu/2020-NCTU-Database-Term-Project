@@ -1,5 +1,5 @@
 <?php
-    $mysqli = new mysqli("localhost", "root", "asd0976373843", "finalproject");
+    $mysqli = new mysqli("localhost", "root", "password", "finalproject");
     if ($mysqli->connect_errno) {
         die("無法建立資料連接: " . $mysqli->connect_error);
     }
