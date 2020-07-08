@@ -10,7 +10,7 @@ $animetype = $_GET['animetype'];
 if ($animetype == "Unknown") $animetype = "";
 $result = $mysqli->query("
     SELECT animelist.jpName, if(animelist.engName = null, '無資料', animelist.engName), animelist.workId,
-        if(animelist.animetype = 'Unknown', '無資料', animelist.animetype), if(animelist.source = 'Unknown', '無資料', animelist.source), animelist.episodes, concat(animelist.duration,' 分'), if(animelist.startyear = 0, '無資料', animelist.startyear), animelist.good, animelist.bad
+        if(animelist.animetype = 'Unknown', '無資料', animelist.animetype), if(animelist.source = 'Unknown', '無資料', animelist.source), animelist.episodes, concat(animelist.duration,' 分'), if(animelist.startyear = 0, '無資料', animelist.startyear), animelist.good, animelist.bad, animelist.workId
 	FROM animelist
     where (animelist.jpName like '%" . $_GET['search'] . "%'
           or animelist.engName like '%" . $_GET['search'] . "%')
@@ -18,7 +18,7 @@ $result = $mysqli->query("
         animelist.source like '%" . $source . "%' and
         animelist.episodes >= " . $_GET['episodes'] . " and 
         animelist.duration >= " . $_GET['duration'] . " and
-        animelist.startyear >= " . $_GET['startyear'] . " and
+        animelist.startyear >= " . $_GET['startyear'] . "
     order by animelist.good desc
     LIMIT " . $_GET['num'] . ";
 ");
