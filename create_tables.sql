@@ -17,7 +17,7 @@ ignore 1 lines;
 
 create table animereviewsorderbytime (
 	id int not null,
-    workId int not null,
+	workId int not null,
 	reviewId int not null,
 	workName varchar(255),
 	postduration varchar(255),
@@ -41,7 +41,7 @@ lines terminated by '\n'
 ignore 1 lines;
 
 create table animelistraw (
-    workId int not null,
+	workId int not null,
 	engName varchar(127),
 	sName varchar(255),
 	jpName varchar(255) character set utf8 collate utf8_general_ci not null,
@@ -114,11 +114,11 @@ insert into animelist(workId, jpName, engName, animetype, source, episodes, dura
 select aml.workId, aml.jpName, aml.engName, aml.animetype, aml.source, aml.episodes, convert(temp3.duration, unsigned), convert(temp4.startyear, unsigned), 0, 0
 from (
 	select temp2.workId as workId, substring_index(temp2.duration, ' ', 1) * 60 + substring_index(temp2.duration, ' ', -1) as duration
-    from (
+	from (
 		select temp5.workId as workId, if(temp5.duration like '%per', replace(temp5.duration, ' per', ''), temp5.duration) as duration
-        from (
+		from (
 			select temp1.workId as workId, if(temp1.duration like '%min.%', concat('0 ', replace(temp1.duration, ' min.', '')), temp1.duration) as duration
-            from (
+			from (
 				select workId, replace(substring_index(duration, ' ', 3), ' hr. ', ' ') as duration
 				from animelistraw
 				where episodes != 0 and duration like '%min.%'
@@ -127,7 +127,7 @@ from (
 	) as temp2
 ) as temp3, (
 	select workId, if(split(airedstring, ' ', 3) REGEXP '^-?[0-9]+$', split(airedstring, ' ', 3), '0') as startyear
-    from animelistraw
+	from animelistraw
 ) as temp4, animelistraw as aml
 where aml.episodes != 0 and temp3.workId = aml.workId and temp4.workId = temp3.workId;
 
