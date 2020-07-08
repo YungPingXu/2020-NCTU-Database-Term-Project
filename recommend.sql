@@ -1,6 +1,6 @@
 set names utf8;
 
-create table animecmp(
+create table animecmp (
 	workId int not null,
 	cmppoint int
 );
@@ -9,11 +9,13 @@ insert into animecmp(workId, cmppoint)
 select workId, 0
 from animelistgenres;
 
-set @n = (select workId
-	  from animelistgenres
-	  where engName = 'Fullmetal Alchemist: Brotherhood');
+set @n = (
+	select workId
+	from animelistgenres
+	where engName = 'Fullmetal Alchemist: Brotherhood'
+);
 
-create table animetemp(
+create table animetemp (
 	workId int not null,
 	genres varchar(255) not null
 );
@@ -311,21 +313,3 @@ where fac.workId = al.workId;
 
 drop table animecmp;
 drop table animetemp;
-
-update animegoodbad
-set good = 10, bad = 30 /*set good = good + 1 OR set bad = bad + 1*/
-where workId = 5114;
-
-select workId, if(good+bad = 0, 'no opinion', 
-               if(good+bad <= 10, 
-               if(good/(good+bad)<0.5, 'a little bad', 'a little good'),
-               if(good/(good+bad)<0.5, 
-               if(good/(good+bad)<0.25, 'very bad', 'a little bad'), 
-               if(good/(good+bad)>=0.75, 'very good', 'a little good'))))
-as goodorbad
-from animegoodbad
-where workId = 5114;
-
-update animegoodbad      /***************/
-set good = 0, bad = 0    /*should remove*/
-where workId = 5114;     /***************/
