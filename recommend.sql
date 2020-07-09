@@ -355,15 +355,21 @@ where workId in (
 	) as an
 );
 
-select al.jpName as jpName, al.engName as engName
+select al.jpName, if(al.engName = null, '無資料', al.engName),
+		if(al.animetype = 'Unknown', '無資料', al.animetype),
+		if(al.source = 'Unknown', '無資料', al.source), al.episodes,
+		concat(al.duration, ' 分'), if(al.startyear = 0, '無資料', al.startyear),
+		al.good, al.bad, al.workId
 from (
 	select ac.workId as workId, ac.cmppoint * 3 + ar.rating as point
-	from animecmp as ac inner join animeRating as ar
+	from animecmp as ac
+	inner join animerating as ar
 	on ac.workId = ar.workId
 	order by point desc
 	limit 50
-) as fac, animename as al
-where fac.workId = al.workId;
+) as fac, animelist as al
+where fac.workId = al.workId
+order by al.good desc;
 
 drop table animecmp;
 drop table animetemp;
