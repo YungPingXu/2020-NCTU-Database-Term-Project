@@ -1,9 +1,8 @@
 <!doctype html>
 <html>
-
 <head>
 	<meta charset="utf-8">
-	<title></title>
+	<title>自製動畫推薦系統</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <script>
@@ -15,12 +14,11 @@
 				document.getElementById("search-button").click();
 			}
 		});
-	}
-
+	}	
 	function search() {
 		var button = document.getElementById("search-button");
 		var word = document.getElementById("search-input");
-		if (word.value.trim() == "") alert("尚未輸入動畫名稱");
+		if (word.value.trim() == "") alert("尚未輸入搜尋內容");
 		else {
 			button.innerHTML = '<i class="fa fa-circle-o-notch fa-spin"></i> 搜尋';
 			var animetype = document.getElementById("animetype");
@@ -30,7 +28,9 @@
 			var episodes = document.getElementById("episodes");
 			var num = document.getElementById("num");
 			var req = new XMLHttpRequest();
-			req.open("GET", "source/search.php?search=" + word.value.trim() + "&animetype=" + animetype.value + "&startyear=" + startyear.value + "&source=" + source.value + "&duration=" + duration.value + "&episodes=" + episodes.value + "&num=" + num.value);
+			req.open("GET", "source/search.php?search=" + word.value.trim() + "&animetype=" + animetype.value +
+				"&startyear=" + startyear.value + "&source=" + source.value + "&duration=" + duration.value +
+				"&episodes=" + episodes.value + "&num=" + num.value);
 			req.onload = function () {
 				document.getElementById("search-result").innerHTML = this.responseText;
 				button.innerHTML = " 搜尋";
@@ -38,7 +38,6 @@
 			req.send();
 		}
 	}
-
 	function recommend(id) {
 		var button = document.getElementById("recommend-button" + id);
 		var recommend_id = document.getElementById("recommend-id" + id);
@@ -58,7 +57,9 @@
 		var episodes = document.getElementById("episodes");
 		var num = document.getElementById("num");
 		var req = new XMLHttpRequest();
-		req.open("GET", "source/recommend.php?id=" + recommend_id.value + "&animetype=" + animetype.value + "&startyear=" + startyear.value + "&source=" + source.value + "&duration=" + duration.value + "&episodes=" + episodes.value + "&num=" + num.value);
+		req.open("GET", "source/recommend.php?id=" + recommend_id.value + "&animetype=" + animetype.value + "&startyear=" +
+			startyear.value + "&source=" + source.value + "&duration=" + duration.value + "&episodes=" + episodes
+				.value + "&num=" + num.value);
 		req.onload = function () {
 			document.getElementById("search-result").innerHTML = this.responseText;
 			button.innerHTML = " 搜尋";
@@ -74,9 +75,11 @@
 		document.getElementById("bad" + id).disabled = true;
 		req.onload = function () {
 			if (req.responseText == "success") {
-				document.getElementById("like" + id).innerText = parseInt(document.getElementById("like" + id).innerText) + 1;
+				document.getElementById("like" + id).innerText = parseInt(document.getElementById("like" + id)
+					.innerText) + 1;
 			} else if (req.responseText == "cancel") {
-				document.getElementById("like" + id).innerText = parseInt(document.getElementById("like" + id).innerText) - 1;
+				document.getElementById("like" + id).innerText = parseInt(document.getElementById("like" + id)
+					.innerText) - 1;
 			}
 			document.getElementById("good" + id).disabled = false;
 			document.getElementById("bad" + id).disabled = false;
@@ -90,9 +93,11 @@
 		document.getElementById("bad" + id).disabled = true;
 		req.onload = function () {
 			if (req.responseText == "success") {
-				document.getElementById("unlike" + id).innerText = parseInt(document.getElementById("unlike" + id).innerText) + 1;
+				document.getElementById("unlike" + id).innerText = parseInt(document.getElementById("unlike" + id)
+					.innerText) + 1;
 			} else if (req.responseText == "cancel") {
-				document.getElementById("unlike" + id).innerText = parseInt(document.getElementById("unlike" + id).innerText) - 1;
+				document.getElementById("unlike" + id).innerText = parseInt(document.getElementById("unlike" + id)
+					.innerText) - 1;
 			}
 			document.getElementById("good" + id).disabled = false;
 			document.getElementById("bad" + id).disabled = false;
@@ -104,7 +109,6 @@
 	* {
 		font-family: "微軟正黑體";
 	}
-
 	#header {
 		background-color: rgb(68, 68, 68);
 		color: white;
@@ -112,11 +116,9 @@
 		padding: 15px;
 		padding-left: 25px;
 	}
-
 	#main {
 		min-height: 588px;
 	}
-
 	#bottom {
 		background-color: rgb(68, 68, 68);
 		color: white;
@@ -125,7 +127,6 @@
 		padding-left: 25px;
 		text-align: center;
 	}
-
 	#intro {
 		font-size: 25px;
 		color: black;
@@ -133,32 +134,27 @@
 		padding-top: 50px;
 		padding-bottom: 10px;
 	}
-
 	#tutorial {
 		font-size: 18px;
 		margin: 0 auto;
 		width: 1030px;
 		margin-bottom: 10px;
 	}
-
 	#search {
 		font-size: 25px;
 		margin: 0 auto;
 		width: 940px;
 	}
-
 	.menu {
 		font-size: 20px;
 		margin-right: 5px;
 	}
-
 	#search-input {
 		font-size: 30px;
 		width: 800px;
 		margin-top: 10px;
 		margin-bottom: 10px;
 	}
-
 	#search-result {
 		font-size: 18px;
 		margin: 0 auto;
@@ -166,11 +162,9 @@
 		margin-bottom: 10px;
 		text-align: center;
 	}
-
 	.img {
 		vertical-align: middle;
 	}
-
 	#search-button {
 		background-color: #4CAF50;
 		border: none;
@@ -179,7 +173,6 @@
 		font-size: 25px;
 		width: 120px;
 	}
-
 	.recommend-button {
 		background-color: #4CAF50;
 		border: none;
@@ -189,7 +182,6 @@
 		width: 140px;
 	}
 </style>
-
 <body style="background-color: rgb(220,220,220);margin: 0px;">
 	<div id="header">
 		自製動畫推薦系統
@@ -383,9 +375,7 @@
 				<option value="200">200</option>
 			</select>筆資料&nbsp&nbsp
 			<br><input type="text" id="search-input" placeholder="搜尋動畫">
-			<button id="search-button" onclick="search()">
-				搜尋
-			</button>
+			<button id="search-button" onclick="search()">搜尋</button>
 		</div>
 		<div id="search-result"></div>
 	</div>
@@ -393,9 +383,4 @@
 		2020 NCTU 資料庫系統概論 final project 第12組 許永平 陳昱瑋.
 	</div>
 </body>
-
-</html>
-
-</html>
-
 </html>
