@@ -34,6 +34,8 @@
 			req.onload = function () {
 				document.getElementById("search-result").innerHTML = this.responseText;
 				button.innerHTML = " 搜尋";
+				window.location.hash = "";
+				window.location.hash = "#search-result";
 			}
 			req.send();
 		}
@@ -65,6 +67,8 @@
 			button.innerHTML = " 搜尋";
 			search_button.disabled = false;
 			search_button.style.opacity = 1;
+			window.location.hash = "";
+			window.location.hash = "#search-result";
 		}
 		req.send();
 	}

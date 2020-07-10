@@ -1,7 +1,7 @@
 <?php
 $mysqli = new mysqli("localhost", "root", "password", "finalproject");
 if ($mysqli->connect_errno)
-die("無法建立資料連接: " . $mysqli->connect_error);
+	die("無法建立資料連接: " . $mysqli->connect_error);
 $ip = "";
 if (!empty($_SERVER['HTTP_CLIENT_IP']))
 	$ip = $_SERVER['HTTP_CLIENT_IP'];
