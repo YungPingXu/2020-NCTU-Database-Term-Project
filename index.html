@@ -14,23 +14,24 @@
 				document.getElementById("search-button").click();
 			}
 		});
-	}	
+	}
 	function search() {
 		var button = document.getElementById("search-button");
-		var word = document.getElementById("search-input");
-		if (word.value.trim() == "") alert("尚未輸入搜尋內容");
+		var word = document.getElementById("search-input").value;
+		var animetype = document.getElementById("animetype").value;
+		var startyear = document.getElementById("startyear").value;
+		var source = document.getElementById("source").value;
+		var duration = document.getElementById("duration").value;
+		var episodes = document.getElementById("episodes").value;
+		var num = document.getElementById("num").value;
+		if (word.trim() == "" && animetype == "Unknown" && source == "Unknown" && startyear == "0" && duration == "0" && episodes == "0")
+			alert("尚未輸入搜尋內容或選擇條件");
 		else {
 			button.innerHTML = '<i class="fa fa-circle-o-notch fa-spin"></i> 搜尋';
-			var animetype = document.getElementById("animetype");
-			var startyear = document.getElementById("startyear");
-			var source = document.getElementById("source");
-			var duration = document.getElementById("duration");
-			var episodes = document.getElementById("episodes");
-			var num = document.getElementById("num");
 			var req = new XMLHttpRequest();
-			req.open("GET", "source/search.php?search=" + word.value.trim() + "&animetype=" + animetype.value +
-				"&startyear=" + startyear.value + "&source=" + source.value + "&duration=" + duration.value +
-				"&episodes=" + episodes.value + "&num=" + num.value);
+			req.open("GET", "/search.php?search=" + word.trim() + "&animetype=" + animetype +
+				"&startyear=" + startyear + "&source=" + source + "&duration=" + duration +
+				"&episodes=" + episodes + "&num=" + num);
 			req.onload = function () {
 				document.getElementById("search-result").innerHTML = this.responseText;
 				button.innerHTML = " 搜尋";
@@ -59,7 +60,7 @@
 		var episodes = document.getElementById("episodes");
 		var num = document.getElementById("num");
 		var req = new XMLHttpRequest();
-		req.open("GET", "source/recommend.php?id=" + recommend_id.value + "&animetype=" + animetype.value + "&startyear=" +
+		req.open("GET", "/recommend.php?id=" + recommend_id.value + "&animetype=" + animetype.value + "&startyear=" +
 			startyear.value + "&source=" + source.value + "&duration=" + duration.value + "&episodes=" + episodes
 				.value + "&num=" + num.value);
 		req.onload = function () {
@@ -74,7 +75,7 @@
 	}
 	function like(id) {
 		var req = new XMLHttpRequest();
-		req.open("GET", "source/like.php?id=" + id);
+		req.open("GET", "/like.php?id=" + id);
 		document.getElementById("good" + id).disabled = true;
 		document.getElementById("bad" + id).disabled = true;
 		req.onload = function () {
@@ -92,7 +93,7 @@
 	}
 	function unlike(id) {
 		var req = new XMLHttpRequest();
-		req.open("GET", "source/unlike.php?id=" + id);
+		req.open("GET", "/unlike.php?id=" + id);
 		document.getElementById("good" + id).disabled = true;
 		document.getElementById("bad" + id).disabled = true;
 		req.onload = function () {
@@ -113,6 +114,7 @@
 	* {
 		font-family: "微軟正黑體";
 	}
+
 	#header {
 		background-color: rgb(68, 68, 68);
 		color: white;
@@ -120,9 +122,11 @@
 		padding: 15px;
 		padding-left: 25px;
 	}
+
 	#main {
 		min-height: 588px;
 	}
+
 	#bottom {
 		background-color: rgb(68, 68, 68);
 		color: white;
@@ -131,6 +135,7 @@
 		padding-left: 25px;
 		text-align: center;
 	}
+
 	#intro {
 		font-size: 25px;
 		color: black;
@@ -138,27 +143,32 @@
 		padding-top: 50px;
 		padding-bottom: 10px;
 	}
+
 	#tutorial {
 		font-size: 18px;
 		margin: 0 auto;
 		width: 1030px;
 		margin-bottom: 10px;
 	}
+
 	#search {
 		font-size: 25px;
 		margin: 0 auto;
 		width: 940px;
 	}
+
 	.menu {
 		font-size: 20px;
 		margin-right: 5px;
 	}
+
 	#search-input {
 		font-size: 30px;
 		width: 800px;
 		margin-top: 10px;
 		margin-bottom: 10px;
 	}
+
 	#search-result {
 		font-size: 18px;
 		margin: 0 auto;
@@ -166,9 +176,11 @@
 		margin-bottom: 10px;
 		text-align: center;
 	}
+
 	.img {
 		vertical-align: middle;
 	}
+
 	#search-button {
 		background-color: #4CAF50;
 		border: none;
@@ -177,6 +189,7 @@
 		font-size: 25px;
 		width: 120px;
 	}
+
 	.recommend-button {
 		background-color: #4CAF50;
 		border: none;
@@ -186,6 +199,7 @@
 		width: 140px;
 	}
 </style>
+
 <body style="background-color: rgb(220,220,220);margin: 0px;">
 	<div id="header">
 		自製動畫推薦系統

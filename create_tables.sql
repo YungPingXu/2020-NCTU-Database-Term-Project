@@ -131,9 +131,9 @@ from (
 ) as temp4, animelistraw as aml
 where aml.episodes != 0 and temp3.workId = aml.workId and temp4.workId = temp3.workId;
 
-create table visitedip (
-	ip varchar(255),
-	id int,
-	good int,
-	bad int
+create table userlike (
+	userIP varchar(255) not null,
+	animeID int not null,
+	good tinyint(1) not null,
+	bad tinyint(1) not null
 );

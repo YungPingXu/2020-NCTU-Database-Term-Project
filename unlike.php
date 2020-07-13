@@ -10,24 +10,13 @@ elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))
 else
 	$ip = $_SERVER['REMOTE_ADDR'];
 $bad = $mysqli->query("
-	select id
-	from visitedip
-	where ip = '" . $ip . "' and id = " . $_GET['id'] . " and good = 0 and bad = 1;
+	select animeID
+	from userlike
+	where userIP = '" . $ip . "' and animeID = " . $_GET['id'] . " and good = 0 and bad = 1;
 ");
-if ($bad->num_rows == 1) {
+if ($bad->num_rows == 0) {
 	$mysqli->query("
-		delete from visitedip
-		where id = " . $_GET['id'] . " and ip = '" . $ip . "' and good = 0 and bad = 1;
-	");
-	$mysqli->query("
-		update animelist
-		set bad = bad - 1
-		where workId = " . $_GET['id'] . ";
-	");
-	echo "cancel";
-} else {
-	$mysqli->query("
-		insert into visitedip value('" . $ip . "', " . $_GET['id'] . ", 0, 1);
+		insert into userlike value('" . $ip . "', " . $_GET['id'] . ", 0, 1);
 	");
 	$mysqli->query("
 		update animelist
@@ -35,5 +24,16 @@ if ($bad->num_rows == 1) {
 		where workId = " . $_GET['id'] . ";
 	");
 	echo "success";
+} else {
+	$mysqli->query("
+		delete from userlike
+		where userIP = '" . $ip . "' and animeID = " . $_GET['id'] . " and good = 0 and bad = 1;
+	");
+	$mysqli->query("
+		update animelist
+		set bad = bad - 1
+		where workId = " . $_GET['id'] . ";
+	");
+	echo "cancel";
 }
 ?>
