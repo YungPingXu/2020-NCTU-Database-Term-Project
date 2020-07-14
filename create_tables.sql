@@ -135,5 +135,6 @@ create table userlike (
 	userIP varchar(255) not null,
 	animeID int not null,
 	good tinyint(1) not null,
-	bad tinyint(1) not null
+	bad tinyint(1) not null,
+	primary key(userIP, animeID, good)
 );
